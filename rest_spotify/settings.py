@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'song',
 ]
 
 MIDDLEWARE = [
@@ -57,7 +58,11 @@ ROOT_URLCONF = 'rest_spotify.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [
+            os.path.join(BASE_DIR, 'rest_spotify', 'templates'),
+            os.path.join(BASE_DIR, 'templates'),
+            os.path.join(BASE_DIR, 'song', 'templates'),
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

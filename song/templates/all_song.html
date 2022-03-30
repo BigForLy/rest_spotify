@@ -1,0 +1,28 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+    <p>NewReleases</p>
+    {% if new_releases %}
+    <ul>
+        {% for release in new_releases %}
+        <li>
+            <p>{{ release.album_type }}
+                {% for artist in release.artists %}
+                    {% if forloop.revcounter0 > 0 %}
+                        {{ artist.name }},
+                    {% else %}
+                        {{ artist.name }}
+                    {% endif %}
+                {% endfor %} -
+                {{release.name}}
+            </p>
+        </li>
+        {% endfor %}
+
+    </ul>
+    {% else %}
+        <p>Not new releases.</p>
+    {% endif %}
+{% endblock %}
+
+
