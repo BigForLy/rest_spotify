@@ -28,7 +28,12 @@ class HomePageView(TemplateView):
     template_name = "all_song.html"
 
     def get_context_data(self, **kwargs):
+        dropdown_list = (
+            'Show',
+            'SendToTelegram'
+        )
         context = super().get_context_data(**kwargs)
         new_releases = NewRelease().get()
         context['new_releases'] = new_releases
+        context['dropdown_list'] = dropdown_list
         return context

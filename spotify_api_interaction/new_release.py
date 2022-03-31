@@ -1,3 +1,5 @@
+import datetime
+
 from spotify_api_interaction.autorisation import Spotify
 import requests
 
@@ -11,11 +13,18 @@ class NewRelease(Spotify):
             'Content-Type': 'application/json',
             'Authorization': 'Bearer %s' % self.token
         }
-        # self._url = 'https://api.spotify.com/v1/browse/new-releases?offset=80&limit=20'
-        self._url = 'https://api.spotify.com/v1/browse/new-releases'
+        self._url = 'https://api.spotify.com/v1/browse/new-releases?limit=50'
 
     def get(self):
-        response = requests.get(url=self._url, headers=self._headers)
-        result = response.json().get('albums').get('items')
-        print(result)
+        print(datetime.datetime.now())
+        result = self._requests(self._url)
+        print(datetime.datetime.now())
+        return result
+
+    def _requests(self, url):
+        response = requests.get(url=url, headers=self._headers)
+        response_json = response.json()
+        result = response_json.get('albums').get('items')
+        if response_json.get('albums').get('next'):
+            result += self._requests(response_json.get('albums').get('next'))
         return result
