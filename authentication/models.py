@@ -1,6 +1,6 @@
 from django.contrib.auth.validators import UnicodeUsernameValidator
 from django.contrib.auth.models import (
-    AbstractBaseUser, BaseUserManager, PermissionsMixin, AbstractUser
+    AbstractBaseUser, BaseUserManager, PermissionsMixin
 )
 from django.db import models
 from django.utils import timezone
