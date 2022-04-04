@@ -134,6 +134,6 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # Bot settings
 
 BOT_TOKEN = env('BOT_TOKEN')
-TELEGRAM_BOT_NAME = 'songdownloadbot'
-TELEGRAM_BOT_TOKEN = BOT_TOKEN
-TELEGRAM_LOGIN_REDIRECT_URL = 'https://iyjjvnvszx.localtunnel.me/'
+# TELEGRAM_BOT_NAME = 'songdownloadbot'
+# TELEGRAM_BOT_TOKEN = BOT_TOKEN
+# TELEGRAM_LOGIN_REDIRECT_URL = 'https://iyjjvnvszx.localtunnel.me/'

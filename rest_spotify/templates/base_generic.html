@@ -32,6 +32,12 @@
                 <li><a href="{% url 'logout'%}?next={{request.path}}">Logout</a></li>
                 {% else %}
                 <li><a href="{% url 'login'%}?next={{request.path}}">Login</a></li>
+                <script async src="https://telegram.org/js/telegram-widget.js?2"
+                        data-telegram-login="SongChartDownloadBot"
+                        data-size="large"
+                        data-auth-url="https://testwidgetbot.herokuapp.com/register/"
+                        data-request-access="write">
+                </script>
                 {% endif %}
             </ul>
 

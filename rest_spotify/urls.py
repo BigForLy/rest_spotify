@@ -21,10 +21,9 @@ from rest_spotify import views
 
 urlpatterns = [
     path('', RedirectView.as_view(url='song/', permanent=True), name='index'),
-    # path('', views.HomePageView.as_view(), name='index'),
     path('admin/', admin.site.urls),
     path('song/', include('song.urls')),
     path('accounts/', include('django.contrib.auth.urls')),
-    path('index1/', TemplateView.as_view(template_name='index1.html')),
-    path('index2/', views.index3),
+    # path('index1/', TemplateView.as_view(template_name='index1.html')), not work
+    # path('index2/', views.index3),
 ]
