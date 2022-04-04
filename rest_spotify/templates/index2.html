@@ -1,23 +1,15 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Telegram Widget</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-    <meta name="format-detection" content="telephone=no" />
-    <meta name="MobileOptimized" content="176" />
-    <meta name="HandheldFriendly" content="True" />
-    <meta name="robots" content="noindex, nofollow" />
+{% extends "base_generic.html" %}
 
-    <link rel="shortcut icon" href="https://telegram.org/favicon.ico?3" type="image/x-icon" />
-    <link href="https://fonts.googleapis.com/css?family=Roboto:400,500" rel="stylesheet" type="text/css">
-    <link href="https://telegram.org/css/widget-frame.css?59" rel="stylesheet" media="screen">
-<!--    <script>TBaseUrl='/';</script>-->
-    <title>Django Telegram Login Widget Example</title>
-</head>
+{% block content %}
 
-<body class="widget_frame_base tgme_widget body_widget_login">
+<p>Hello, Anonymous!</p>
 
-</body>
+<p>You can log in via Telegram here.</p>
 
-</html>
+    <script async src="https://telegram.org/js/telegram-widget.js?2"
+            data-telegram-login="SongChartDownloadBot"
+            data-size="large"
+            data-auth-url="https://testwidgetbot.herokuapp.com/register/"
+            data-request-access="write">
+    </script>
+{% endblock %}
