@@ -19,7 +19,7 @@ from django.views.generic import TemplateView
 #         return context
 # from django.conf import settings
 # from django.http import HttpResponse
-# from django.shortcuts import render
+from django.shortcuts import render
 #
 # from django_telegram_login.widgets.constants import (
 #     SMALL,
