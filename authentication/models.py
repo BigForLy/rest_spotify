@@ -7,6 +7,13 @@ from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 
 
+class TelegramUser(models.Model):
+    tg_id = models.IntegerField(_('telegram chat id'), blank=True)
+    username = models.CharField(_('telegram username'), max_length=127, blank=True)
+    photo_url = models.URLField(_('telegram photo'), blank=False)
+    auth_date = models.CharField(_('date of authentication'), max_length=127)
+
+
 class UserManager(BaseUserManager):
 
     def create_user(self, username, password=None):
