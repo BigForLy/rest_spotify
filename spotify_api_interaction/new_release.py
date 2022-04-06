@@ -1,10 +1,10 @@
-import datetime
+from datetime import datetime
 
 from spotify_api_interaction.autorisation import Spotify
 import requests
 
 
-class NewRelease(Spotify):
+class MySpotify(Spotify):
 
     def __init__(self):
         super().__init__()
@@ -15,10 +15,11 @@ class NewRelease(Spotify):
         }
         self._url = 'https://api.spotify.com/v1/browse/new-releases?limit=50'
 
-    def get(self):
-        print(datetime.datetime.now())
+    def get_new_releases(self):
+        foo = datetime.now()
         result = self._requests(self._url)
-        print(datetime.datetime.now())
+        bar = datetime.now()
+        print('get_new_releases ', bar-foo)
         return result
 
     def _requests(self, url):

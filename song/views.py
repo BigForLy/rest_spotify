@@ -1,3 +1,4 @@
+from datetime import datetime
 from django.shortcuts import render
 
 # def index(request):
@@ -21,7 +22,8 @@ from django.shortcuts import render
 #     )
 from django.views.generic import TemplateView
 
-from spotify_api_interaction.new_release import NewRelease
+from song.services import ReleasesInstance
+from spotify_api_interaction.new_release import MySpotify
 
 
 class HomePageView(TemplateView):
@@ -33,7 +35,14 @@ class HomePageView(TemplateView):
             'SendToTelegram'
         )
         context = super().get_context_data(**kwargs)
-        new_releases = NewRelease().get()
-        context['new_releases'] = new_releases
+        ReleasesInstance().delete()
+        if ReleasesInstance().count == 0:
+            new_releases = MySpotify().get_new_releases()  # todo: handle error
+            # create_or_update_releases(new_releases)
+            foo = datetime.now()
+            ReleasesInstance().create_or_update_many(new_releases)
+            bar = datetime.now()
+            print('create_or_update_many ', bar-foo)
+        context['new_releases'] = ReleasesInstance().get_all()
         context['dropdown_list'] = dropdown_list
         return context

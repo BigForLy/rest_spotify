@@ -10,14 +10,9 @@
         <table>
             {% for release in new_releases %}
                 <tr>
-                    <td>{{ release.album_type }}</td>
-                    <td>{% for artist in release.artists %}
-                        {% if forloop.revcounter0 > 0 %}
-                            {{ artist.name }},
-                        {% else %}
-                            {{ artist.name }}
-                        {% endif %}
-                    {% endfor %}</td>
+                    <td>{{ release.release_date }}</td>
+                    <td>{{ release.type }}</td>
+                    <td>{{ release.get_artists }}</td>
                     <td>{{ release.name }}</td>
                     <td>
                         <div class="dropdown">
