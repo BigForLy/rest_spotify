@@ -1,0 +1,12 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+
+<h1>Title: {{ release.name }}</h1>
+
+<p><strong>Author:</strong> <a href="{{ release.id }}">{{ release.get_artists }}</a></p>
+{% comment %} <p><strong>Genre:</strong> {{ book.genre.all|join:", " }}</p> {% endcomment %}
+<p><strong>Release:</strong> {{ release.release_date }}</p>
+<p><strong>Type:</strong> {{ release.type }}</p>
+
+{% endblock %}
