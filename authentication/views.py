@@ -15,10 +15,10 @@ class LoginTelegram(LoginView):
             return render(request, 'error.html', {
                 'msg': 'Bad hash!'
             })
-        user, created = User.objects.get_or_create(
-            telegram_chat_id=request.GET.get('id'),
+        user, _ = User.objects.get_or_create(
+            telegram_chat_id=int(request.GET.get('id')),
         )
-        if user.username:
+        if request.GET.get('username'):
             user.username = request.GET.get('username')
         else:
             user.username = f'User_{user.telegram_chat_id}'

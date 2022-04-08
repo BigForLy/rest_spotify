@@ -55,7 +55,7 @@ class User(AbstractBaseUser, PermissionsMixin):
             "unique": _("A user with that username already exists."),
         },
     )
-    telegram_chat_id = models.IntegerField(_('telegram chat id'), blank=True)
+    telegram_chat_id = models.BigIntegerField(_('telegram chat id'), blank=True)
     photo_url = models.URLField(_('telegram photo'), blank=False)
     auth_date = models.CharField(_('date of authentication'), max_length=127)
     is_staff = models.BooleanField(
