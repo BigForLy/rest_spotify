@@ -1,10 +1,30 @@
-from song.models import Artists, Releases
+from song.models import ArtistsInstance, DataFromSpotifyInstance, ReleasesInstance
 
 
-class ReleasesInstance:
+class DataFromSpotify:
+    """
+    CRUD interface DataFromSpotifyInstance
+    """
 
-    def __init__(self):
-        self.model = Releases
+    @staticmethod
+    def create(datetime_now):
+        release = DataFromSpotifyInstance.objects.create(time_loading=datetime_now)
+        release.save()   # todo: rename
+
+    @staticmethod
+    def get():
+        return DataFromSpotifyInstance.objects.last()
+
+    @staticmethod
+    def update():
+        pass
+
+    @staticmethod
+    def delete():
+        DataFromSpotifyInstance.objects.all().delete()
+
+
+class Releases:
 
     def create(self):
         pass
@@ -12,19 +32,21 @@ class ReleasesInstance:
     def get(self):
         pass
 
-    def get_all(self):
-        return Releases.objects.prefetch_related('artists')
+    @staticmethod
+    def get_all():
+        return ReleasesInstance.objects.prefetch_related('artists')
 
     def update(self):
         pass
 
     @property
     def count(self) -> int:
-        return self.model.objects.all().count()
+        return ReleasesInstance.objects.all().count()
 
-    def create_or_update_many(self, releases):
+    @staticmethod
+    def create_or_update_many(releases):
         for item in releases:
-            release, created = self.model.objects.get_or_create(
+            release, _ = ReleasesInstance.objects.get_or_create(
                 id=item.get('id'),
             )
             release.name = item.get('name')
@@ -34,18 +56,16 @@ class ReleasesInstance:
             release.total_track = item.get('total_track')
             release.save()
             for artist_item in item['artists']:
-                artist = ArtistsInstance().create_or_update(artist_item)
+                artist = Artists.create_or_update(artist_item)
                 release.artists.add(artist)
             release.save()
 
-    def delete(self, pk=None):
-        self.model.objects.all().delete()
+    @staticmethod
+    def delete():
+        ReleasesInstance.objects.all().delete()
 
 
-class ArtistsInstance:
-
-    def __init__(self):
-        self.model = Artists
+class Artists:
 
     def create(self):
         pass
@@ -56,8 +76,9 @@ class ArtistsInstance:
     def update(self):
         pass
 
-    def create_or_update(self, data):
-        artist, created = self.model.objects.get_or_create(
+    @staticmethod
+    def create_or_update(data):
+        artist, created = ArtistsInstance.objects.get_or_create(
             id=data.get('id')
         )
         artist.name = data.get('name')

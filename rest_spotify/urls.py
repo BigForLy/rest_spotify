@@ -20,7 +20,7 @@ from django.views.generic import RedirectView, TemplateView
 from rest_spotify import views
 
 urlpatterns = [
-    path('', RedirectView.as_view(url='song/', permanent=True), name='index'),
+    path('', RedirectView.as_view(url='song/', permanent=True)),
     path('admin/', admin.site.urls),
     path('song/', include('song.urls')),
     path('accounts/', include('django.contrib.auth.urls')),

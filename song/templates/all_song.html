@@ -10,11 +10,8 @@
         <table>
             {% for release in new_releases %}
                 <tr>
-                    <td>{{ release.release_date }}</td>
-                    <td>{{ release.type }}</td>
-                    <td>{{ release.get_artists }}</td>
-                    <td>{{ release.name }}</td>
-                    <td>
+                    <td>{{ release.get_artists }} - {{ release.name }} </td>                    
+                    <td>{{ release.release_date }}</td><td>
                         <div class="dropdown">
                           <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             ...
@@ -22,7 +19,7 @@
 
                           <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                               {% for dropdown_item in dropdown_list %}
-                                <a class="dropdown-item" href="#">{{ dropdown_item }}</a>
+                                <a class="dropdown-item" href="{% url 'song_detail' release.pk %}">{{ dropdown_item }}</a>
                               {% endfor %}
                           </div>
                         </div>
