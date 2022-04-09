@@ -1,3 +1,5 @@
+import os
+
 from django.views.generic import TemplateView
 
 # class Homepage(APIView):
@@ -19,7 +21,8 @@ from django.views.generic import TemplateView
 #         return context
 # from django.conf import settings
 # from django.http import HttpResponse
-from django.shortcuts import render
+from django.shortcuts import render, redirect
+
 #
 # from django_telegram_login.widgets.constants import (
 #     SMALL,
@@ -81,7 +84,16 @@ from django.shortcuts import render
 #
 #     context = {'telegram_login_widget': telegram_login_widget}
 #     return render(request, 'redirect.html', context)
+from authentication.utils import HashCheck
 
 
-def index3(request):
-    return render(request, "index2.html", {})
+def register(request):
+    secret = os.getenv('BOT_TOKEN').encode('utf-8')
+    if not HashCheck(request.GET, secret).check_hash():
+        return render(request, 'error.html', {
+            'msg': 'Bad hash!'
+        })
+    # user = TgUser.make_from_dict(request.GET)
+    # user.save()
+    # request.session['user_id'] = user.id
+    return redirect('/')
