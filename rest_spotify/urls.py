@@ -15,14 +15,12 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from django.views.generic import RedirectView, TemplateView
-
-from rest_spotify import views
+from django.views.generic import RedirectView
 
 urlpatterns = [
     path('', RedirectView.as_view(url='song/', permanent=True)),
     path('admin/', admin.site.urls),
     path('song/', include('song.urls')),
     path('accounts/', include('django.contrib.auth.urls')),
-    path('register/', views.register),
+    path('auth/tg/', include('authentication.urls')),
 ]
