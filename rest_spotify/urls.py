@@ -25,7 +25,4 @@ urlpatterns = [
     path('song/', include('song.urls')),
     path('accounts/', include('django.contrib.auth.urls')),
     path('register/', views.register),
-    # path('register/', include('authentication.urls')),
-    # path('index1/', TemplateView.as_view(template_name='index1.html')), not work
-    # path('index2/', views.index3),
 ]
