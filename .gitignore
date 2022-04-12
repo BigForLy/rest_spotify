@@ -119,7 +119,8 @@ venv/
 ENV/
 env.bak/
 venv.bak/
-.cnf
+my.cnf
+.vscode
 
 # Spyder project settings
 .spyderproject
