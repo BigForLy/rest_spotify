@@ -1,4 +1,4 @@
-from song.models import ArtistsInstance, DataFromSpotifyInstance, ReleasesInstance
+from song.models import ArtistsInstance, DataFromSpotifyInstance, ImagesInstance, ReleasesInstance
 
 
 class DataFromSpotify:
@@ -34,7 +34,7 @@ class Releases:
 
     @staticmethod
     def get_all():
-        return ReleasesInstance.objects.prefetch_related('artists')
+        return ReleasesInstance.objects.prefetch_related('artists', 'images')
 
     def update(self):
         pass
@@ -51,9 +51,11 @@ class Releases:
             )
             release.name = item.get('name')
             release.type = item.get('album_type')
-            # release.images = item.get('name')
+            image = Images.create(item.get('images'))
+            release.images.add(image)
+            # release.images = item.get('images')[2].get('url')
             release.release_date = item.get('release_date')
-            release.total_track = item.get('total_track')
+            release.total_track = item.get('total_tracks')
             release.save()
             for artist_item in item['artists']:
                 artist = Artists.create_or_update(artist_item)
@@ -63,6 +65,16 @@ class Releases:
     @staticmethod
     def delete():
         ReleasesInstance.objects.all().delete()
+
+
+class Images:
+    @staticmethod
+    def create(data):
+        images = ImagesInstance.objects.create(
+            url64=data[2].get('url'), url300=data[1].get('url'), url640=data[0].get('url')
+        )
+        images.save()
+        return images
 
 
 class Artists:

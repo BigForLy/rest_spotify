@@ -4,6 +4,7 @@
 
 <h1>Title: {{ release.name }}</h1>
 
+<img src={{ release.get_url640 }} width="640" height="640" alt="Пример"> 
 <p><strong>Author:</strong> <a href="{{ release.id }}">{{ release.get_artists }}</a></p>
 {% comment %} <p><strong>Genre:</strong> {{ book.genre.all|join:", " }}</p> {% endcomment %}
 <p><strong>Release:</strong> {{ release.release_date }}</p>

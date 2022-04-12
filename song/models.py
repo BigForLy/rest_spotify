@@ -27,8 +27,10 @@ class ArtistsInstance(models.Model):
     name = models.TextField(max_length=255)
 
 
-class Images(models.Model):
-    pass
+class ImagesInstance(models.Model):
+    url64 = models.URLField('url 64x64', blank=False)
+    url300 = models.URLField('url 300x300', blank=False)
+    url640 = models.URLField('url 640x640', blank=False)
 
 
 class ReleasesInstance(models.Model):
@@ -36,8 +38,7 @@ class ReleasesInstance(models.Model):
                           max_length=22, unique=True)
     name = models.CharField('name', max_length=255)
     type = models.CharField('single/album', max_length=255)
-    images = models.CharField('in future ForeignKey(Images)',
-                              max_length=255, null=True, blank=False, default=None)
+    images = models.ManyToManyField(ImagesInstance)
     release_date = models.DateField(null=True, blank=True)
     total_track = models.IntegerField(
         'if album - count track, if single - 1', null=True)
@@ -49,3 +50,11 @@ class ReleasesInstance(models.Model):
     @property
     def get_artists(self):
         return ', '.join(artist.name for artist in self.artists.all())
+        
+    @property
+    def get_url64(self):
+        return self.images.first().url64
+    
+    @property
+    def get_url640(self):
+        return self.images.first().url640

@@ -10,6 +10,8 @@
         <table>
             {% for release in new_releases %}
                 <tr>
+                    <td> <img src={{ release.get_url64 }} width="64" 
+                        height="64" alt="Пример"> </td> 
                     <td>{{ release.get_artists }} - {{ release.name }} </td>                    
                     <td>{{ release.release_date }}</td><td>
                         <div class="dropdown">

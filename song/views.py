@@ -37,7 +37,7 @@ class HomePageView(TemplateView):
         )
         context = super().get_context_data(**kwargs)
         last_write = DataFromSpotify.get()
-        if last_write is None or last_write.is_overdue:
+        if last_write is None or last_write.is_overdue or True:
             new_releases = MySpotify().get_new_releases()  # todo: handle error
             DataFromSpotify.create(datetime.now())
             Releases.delete()
