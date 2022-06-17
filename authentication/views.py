@@ -5,6 +5,9 @@ from authentication.models import User
 from authentication.utils import HashCheck
 from rest_spotify import settings
 
+from django.contrib.auth import logout
+from django.shortcuts import redirect
+
 
 class LoginTelegram(LoginView):
 
@@ -27,3 +30,7 @@ class LoginTelegram(LoginView):
         user.save()
         login(request, user)
         return redirect('song')
+
+def logout_view(request):
+    logout(request)
+    return redirect('song')
