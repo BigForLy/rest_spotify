@@ -1,29 +1,28 @@
-from datetime import datetime
 from django.views import generic
 
 from django.views.generic import TemplateView
-from song.models import ReleasesInstance
-
-from song.services import DataFromSpotify, Releases
-from spotify_api_interaction.my_spotify import MySpotify
+from .models import Releases, DataFromSpotify, Artists
+from spotify_api_interaction import MySpotify
 
 
 class HomePageView(TemplateView):
     template_name = "all_song.html"
 
     def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        last_write = DataFromSpotify.objects.last()
+        if last_write is None or last_write.is_overdue:
+            new_releases = MySpotify().get_new_releases()
+            DataFromSpotify.objects.create()
+            Releases.objects.all().delete()
+            Artists.objects.all().delete()
+            Releases.objects.create_from_data(new_releases)
+        context['new_releases'] = Releases.objects\
+            .prefetch_related('artists', 'images')
         dropdown_list = (
             'Show',
             'SendToTelegram'
         )
-        context = super().get_context_data(**kwargs)
-        last_write = DataFromSpotify.get()
-        if last_write is None or last_write.is_overdue:
-            new_releases = MySpotify().get_new_releases()  # todo: handle error
-            DataFromSpotify.create(datetime.now())
-            Releases.delete()
-            Releases.create_or_update_many(new_releases)
-        context['new_releases'] = Releases.get_all()
         context['dropdown_list'] = dropdown_list
         return context
 
@@ -31,5 +30,5 @@ class HomePageView(TemplateView):
 class BookDetailView(generic.DetailView):
     """Generic class-based detail view for a book."""
     template_name = "song_detail.html"
-    model = ReleasesInstance
+    model = Releases
     context_object_name = 'release'

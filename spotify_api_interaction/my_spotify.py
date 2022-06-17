@@ -1,8 +1,8 @@
-from spotify_api_interaction.autorisation import Spotify
+from .abstract_spotify import AbstractSpotify
 import requests
 
 
-class MySpotify(Spotify):
+class MySpotify(AbstractSpotify):
 
     def __init__(self):
         super().__init__()

@@ -4,7 +4,7 @@ import requests
 from rest_spotify.settings import env
 
 
-class Spotify:
+class AbstractSpotify:
 
     def __init__(self):
         self._token = None
@@ -35,4 +35,4 @@ class Spotify:
         self._token = access_token_response_data['access_token']
 
     def _token_is_valid(self):
-        self._get_bearer_token()  # temporary implementation
+        self._get_bearer_token()  # todo: temporary implementation, check timeout token
