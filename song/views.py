@@ -2,7 +2,7 @@ from django.views import generic
 
 from django.views.generic import TemplateView
 from .models import Releases, DataFromSpotify, Artists
-from spotify_api_interaction import MySpotify
+from spotify_api_integration import MySpotify
 
 
 class HomePageView(TemplateView):
