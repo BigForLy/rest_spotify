@@ -3,7 +3,7 @@ from django.contrib.auth.views import LoginView
 from django.shortcuts import render, redirect
 from authentication.models import User
 from authentication.utils import HashCheck
-from rest_spotify import settings
+from rest_spotify import settings  # todo: ???
 
 from django.contrib.auth import logout
 from django.shortcuts import redirect
