@@ -40,7 +40,7 @@ class SongSendMessageView(View):
 
         if request.user.is_authenticated:
             release = request.POST.get("release")
-            result: Response = TelegramClient(request.user.telegram_chat_id, settings.get('BOT_TOKEN')) \
+            result: Response = TelegramClient(request.user.telegram_chat_id, settings.BOT_TOKEN) \
                 .send_message(release)
             return JsonResponse({'status': result.reason}, status=result.status_code)
         else:
