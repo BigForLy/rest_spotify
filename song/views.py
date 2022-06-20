@@ -1,6 +1,6 @@
 from django.views import generic
 from django.http import JsonResponse
-from telegram_api_integration.send_message import send_message
+from telegram_api_integration import TelegramClient
 from .models import Releases, DataFromSpotify, Artists
 from spotify_api_integration import MySpotify
 from django.views.generic.base import View
@@ -38,7 +38,7 @@ class SongSendMessageView(View):
             return JsonResponse({'status': 'Not AJAX request'}, status=404)
         if request.user.is_authenticated:
             release = request.POST.get("release")
-            result: Response = send_message(request.user.telegram_chat_id, release)
+            result: Response = TelegramClient(request.user.telegram_chat_id).send_message(release)
             return JsonResponse({'status': result.reason}, status=result.status_code)
         else:
             return JsonResponse({'status': 'Please login'}, status=401)
