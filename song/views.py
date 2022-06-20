@@ -36,9 +36,11 @@ class SongSendMessageView(View):
     def post(self, request):
         if request.META.get('HTTP_X_REQUESTED_WITH') != 'XMLHttpRequest':
             return JsonResponse({'status': 'Not AJAX request'}, status=404)
+
         if request.user.is_authenticated:
             release = request.POST.get("release")
-            result: Response = TelegramClient(request.user.telegram_chat_id).send_message(release)
+            result: Response = TelegramClient(request.user.telegram_chat_id) \
+                .send_message(release)
             return JsonResponse({'status': result.reason}, status=result.status_code)
         else:
             return JsonResponse({'status': 'Please login'}, status=401)
