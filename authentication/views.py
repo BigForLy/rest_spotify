@@ -14,6 +14,8 @@ class LoginTelegram(LoginView):
     def get(self, request, *args, **kwargs):
         bot_token = settings.BOT_TOKEN
         secret = bot_token.encode('utf-8')
+        if request.GET.get('hash') is None:
+            return redirect('song')
         if not HashCheck(request.GET, secret).check_hash():
             return render(request, 'error.html', {
                 'msg': 'Bad hash!'

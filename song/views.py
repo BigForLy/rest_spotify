@@ -1,11 +1,13 @@
 from django.views import generic
-
-from django.views.generic import TemplateView
+from django.http import JsonResponse
+from telegram_api_integration.send_message import send_message
 from .models import Releases, DataFromSpotify, Artists
 from spotify_api_integration import MySpotify
+from django.views.generic.base import View
+from requests import Response
 
 
-class HomePageView(TemplateView):
+class HomePageView(generic.TemplateView):
     template_name = "all_song.html"
 
     def get_context_data(self, **kwargs):
@@ -19,11 +21,6 @@ class HomePageView(TemplateView):
             Releases.objects.create_from_data(new_releases)
         context['new_releases'] = Releases.objects\
             .prefetch_related('artists', 'images')
-        dropdown_list = (
-            'Show',
-            'SendToTelegram'
-        )
-        context['dropdown_list'] = dropdown_list
         return context
 
 
@@ -32,3 +29,16 @@ class BookDetailView(generic.DetailView):
     template_name = "song_detail.html"
     model = Releases
     context_object_name = 'release'
+
+
+class SongSendMessageView(View):
+
+    def post(self, request):
+        if request.META.get('HTTP_X_REQUESTED_WITH') != 'XMLHttpRequest':
+            return JsonResponse({'status': 'Not AJAX request'}, status=404)
+        if request.user.is_authenticated:
+            release = request.POST.get("release")
+            result: Response = send_message(request.user.telegram_chat_id, release)
+            return JsonResponse({'status': result.reason}, status=result.status_code)
+        else:
+            return JsonResponse({'status': 'Please login'}, status=401)
