@@ -10,5 +10,20 @@ class TelegramClient:
 
     def send_message(self, message: str) -> Response:
         url = f"https://api.telegram.org/bot{self.__token}/sendMessage?chat_id={self.__telegram_chat_id}&text={message}"
-        response = requests.get(url)
-        return response
+        return requests.get(url)
+
+    def send_audio(self, audio):
+        payload = {
+            'chat_id': self.__telegram_chat_id,
+            'title': 'file.mp3',
+            'parse_mode': 'HTML'
+        }
+        files = {
+            'audio': audio.read(),
+        }
+        url = f"https://api.telegram.org/bot{self.__token}/sendAudio"
+        return requests.post(
+            url,
+            data=payload,
+            files=files
+        )
