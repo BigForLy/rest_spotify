@@ -1,6 +1,8 @@
 from django.views import generic
 from django.conf import settings
 from django.http import JsonResponse
+from song_download_api_integration.downloader import DownloadStrategy
+from spotify_api_integration.my_spotify import Song
 from telegram_api_integration import TelegramClient
 from .models import Releases, DataFromSpotify, Artists
 from spotify_api_integration import MySpotify
@@ -35,13 +37,19 @@ class BookDetailView(generic.DetailView):
 class SongSendMessageView(View):
 
     def post(self, request):
+
+        # downloader = DownloadStrategy.music(request.POST.get("type"), request.POST.get("release"))
+        
         if request.META.get('HTTP_X_REQUESTED_WITH') != 'XMLHttpRequest':
             return JsonResponse({'status': 'Not AJAX request'}, status=404)
 
         if request.user.is_authenticated:
-            release = request.POST.get("release")
-            result: Response = TelegramClient(request.user.telegram_chat_id, settings.BOT_TOKEN) \
-                .send_message(release)
+            downloader = DownloadStrategy.music(request.POST.get("type"), request.POST.get("release"))
+            song: Song = downloader.download()
+            with song as audio:
+                result: Response = TelegramClient(568817064, settings.BOT_TOKEN) \
+                    .send_audio(audio, f'{song.artist} - {song.name}')
+            
             return JsonResponse({'status': result.reason}, status=result.status_code)
         else:
             return JsonResponse({'status': 'Please login'}, status=401)

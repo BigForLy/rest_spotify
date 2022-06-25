@@ -12,10 +12,10 @@ class TelegramClient:
         url = f"https://api.telegram.org/bot{self.__token}/sendMessage?chat_id={self.__telegram_chat_id}&text={message}"
         return requests.get(url)
 
-    def send_audio(self, audio):
+    def send_audio(self, audio, title = 'file'):
         payload = {
             'chat_id': self.__telegram_chat_id,
-            'title': 'file.mp3',
+            'title': title,
             'parse_mode': 'HTML'
         }
         files = {
