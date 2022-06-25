@@ -41,7 +41,7 @@
                 url: "{% url 'send_message' %}",
                 data: { 
                     release: $(this).data('release'), 
-                    type: $(this).data('type'), 
+                    type_1: 'single', 
                     csrfmiddlewaretoken: '{{ csrf_token }}'
                 },
                 method: 'POST'

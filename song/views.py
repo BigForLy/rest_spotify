@@ -44,7 +44,7 @@ class SongSendMessageView(View):
             return JsonResponse({'status': 'Not AJAX request'}, status=404)
 
         if request.user.is_authenticated:
-            downloader = DownloadStrategy.music(request.POST.get("type"), request.POST.get("release"))
+            downloader = DownloadStrategy.music(request.POST.get("type_1"), request.POST.get("release"))
             song: Song = downloader.download()
             with song as audio:
                 result: Response = TelegramClient(568817064, settings.BOT_TOKEN) \
