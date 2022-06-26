@@ -24,7 +24,7 @@
 
                           <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                               <a class="dropdown-item" href="{% url 'song_detail' release.pk %}">{{ "Show" }}</a>
-                              <a class="dropdown-item" data-release={{ release.pk }} id="send_telegram">{{ "SendToTelegram" }}</a>
+                              <a class="dropdown-item" data-release={{ release.pk }} data-type={{ release.type }} id="send_telegram" onClick='showGreeting()'>{{ "SendToTelegram" }}</a>
                           </div>
                         </div>
                     </td>
@@ -36,7 +36,25 @@
     {% endif %}
 
     <script>
-        $('#send_telegram').on('click', function() {
+        function showGreeting() {
+            $.ajax({
+                url: "{% url 'send_message' %}",
+                data: { 
+                    release: $(this).data('release'), 
+                    type: $(this).data('type'), 
+                    csrfmiddlewaretoken: '{{ csrf_token }}'
+                },
+                method: 'POST'
+            })
+            .done((res) => {
+                alert(JSON.stringify(res));
+                alert(res.status);
+            })
+            .fail((error) => {
+                alert(error.responseJSON.status);
+            });
+          }
+        {% comment %} $('#send_telegram').on('click', function() {
             $.ajax({
                 url: "{% url 'send_message' %}",
                 data: { 
@@ -53,6 +71,6 @@
             .fail((error) => {
                 alert(error.responseJSON.status);
             });
-            });
+            }); {% endcomment %}
     </script>
 {% endblock %}

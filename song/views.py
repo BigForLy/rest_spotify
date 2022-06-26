@@ -43,18 +43,17 @@ class BookDetailView(generic.DetailView):
 class SongSendMessageView(View):
 
     def post(self, request):
-
-        # downloader = DownloadStrategy.music(request.POST.get("type"), request.POST.get("release"))
-
         if request.META.get('HTTP_X_REQUESTED_WITH') != 'XMLHttpRequest':
             return JsonResponse({'status': 'Not AJAX request'}, status=404)
 
         if request.user.is_authenticated:
             downloader = DownloadStrategy.music(
-                request.POST.get("type_1"), '7FIWs0pqAYbP91WWM0vlTQ')
+                request.POST.get("type"),
+                request.POST.get("release")
+            )
             song: Song = downloader.download()
             with song as audio:
-                result: Response = TelegramClient(568817064, settings.BOT_TOKEN) \
+                result: Response = TelegramClient(request.user.telegram_chat_id, settings.BOT_TOKEN) \
                     .send_audio(audio, f'{song.artist} - {song.name}')
 
             return JsonResponse({'status': result.reason}, status=result.status_code)
