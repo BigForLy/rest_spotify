@@ -24,7 +24,7 @@
 
                           <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                               <a class="dropdown-item" href="{% url 'song_detail' release.pk %}">{{ "Show" }}</a>
-                              <a class="dropdown-item" data-release={{ release.pk }} data-type={{ release.type }} id="send_telegram">{{ "SendToTelegram" }}</a>
+                              <a class="dropdown-item" data-release={{ release.pk }} id="send_telegram">{{ "SendToTelegram" }}</a>
                           </div>
                         </div>
                     </td>
