@@ -24,7 +24,7 @@
 
                           <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                               <a class="dropdown-item" href="{% url 'song_detail' release.pk %}">{{ "Show" }}</a>
-                              <a class="dropdown-item" data-release={{ release.pk }} data-type={{ release.type }} id="send_telegram" onClick='showGreeting()'>{{ "SendToTelegram" }}</a>
+                              <a class="dropdown-item" id="send_telegram" onClick="sendTelegram('{{ release.pk }}','{{ release.type }}')">{{ "SendToTelegram" }}</a>
                           </div>
                         </div>
                     </td>
@@ -36,12 +36,12 @@
     {% endif %}
 
     <script>
-        function showGreeting() {
+        function sendTelegram(release_pk, release_type) {
             $.ajax({
                 url: "{% url 'send_message' %}",
                 data: { 
-                    release: $(this).data('release'), 
-                    type: $(this).data('type'), 
+                    release: release_pk, 
+                    type: release_type, 
                     csrfmiddlewaretoken: '{{ csrf_token }}'
                 },
                 method: 'POST'
@@ -53,24 +53,6 @@
             .fail((error) => {
                 alert(error.responseJSON.status);
             });
-          }
-        {% comment %} $('#send_telegram').on('click', function() {
-            $.ajax({
-                url: "{% url 'send_message' %}",
-                data: { 
-                    release: $(this).data('release'), 
-                    type_1: 'single', 
-                    csrfmiddlewaretoken: '{{ csrf_token }}'
-                },
-                method: 'POST'
-                })
-            .done((res) => {
-                alert(JSON.stringify(res));
-                alert(res.status);
-            })
-            .fail((error) => {
-                alert(error.responseJSON.status);
-            });
-            }); {% endcomment %}
+        }
     </script>
 {% endblock %}

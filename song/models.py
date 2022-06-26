@@ -95,7 +95,7 @@ class ReleasesManager(models.Manager):
                 images=Images.objects.create_from_data(item.get('images'))
             )
             release.name = item.get('name')
-            release.type = item.get('album_type')
+            release.type = item.get('type')  #todo: create new attribute item.get('album_type')
             release.release_date = item.get('release_date')
             release.total_track = item.get('total_tracks')
             for artist_item in item['artists']:
