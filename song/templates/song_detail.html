@@ -1,13 +1,57 @@
 {% extends "base_generic.html" %}
 
 {% block content %}
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
 <h1>Title: {{ release.name }}</h1>
 
 <img src={{ release.get_url640 }} width="640" height="640" alt="Пример"> 
 <p><strong>Author:</strong> <a href="{{ release.id }}">{{ release.get_artists }}</a></p>
-{% comment %} <p><strong>Genre:</strong> {{ book.genre.all|join:", " }}</p> {% endcomment %}
 <p><strong>Release:</strong> {{ release.release_date }}</p>
 <p><strong>Type:</strong> {{ release.type }}</p>
+<table>
+    {% for subrelease in subreleases %}
+        <tr>
+            <td>{{ subrelease.track_number }} </td>                    
+            <td>{{ subrelease.name }}</td>
+            <td>
+                <div class="dropdown">
+                  <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    ...
+                  </a>
+
+                  <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                      <a class="dropdown-item" id="send_telegram" onClick="sendTelegram('{{ subrelease.id }}','{{ subrelease.type }}')">{{ "SendToTelegram" }}</a>
+                  </div>
+                </div>
+            </td>
+        </tr>
+    {% endfor %}
+</table>
+
+<script>
+    function sendTelegram(release_pk, release_type) {
+        $.ajax({
+            url: "{% url 'send_message' %}",
+            data: { 
+                release: release_pk, 
+                type: release_type, 
+                csrfmiddlewaretoken: '{{ csrf_token }}'
+            },
+            method: 'POST'
+        })
+        .done((res) => {
+            alert(JSON.stringify(res));
+            alert(res.status);
+        })
+        .fail((error) => {
+            alert(error.responseJSON.status);
+        });
+    }
+</script>
 
 {% endblock %}

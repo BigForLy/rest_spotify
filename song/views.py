@@ -14,12 +14,6 @@ class HomePageView(generic.TemplateView):
     template_name = "all_song.html"
 
     def get_context_data(self, **kwargs):
-
-        # import redis
-        # r = redis.Redis(host='redis-18045.c124.us-central1-1.gce.cloud.redislabs.com',
-        #                 port=18045,
-        #                 password='WJWHltvrSY4OtwkyogwIx9iDLjildkXv')
-        # r.set('r', 'm')
         context = super().get_context_data(**kwargs)
         last_write = DataFromSpotify.objects.last()
         if last_write is None or last_write.is_overdue:
@@ -33,11 +27,16 @@ class HomePageView(generic.TemplateView):
         return context
 
 
-class BookDetailView(generic.DetailView):
-    """Generic class-based detail view for a book."""
+class SongDetailView(generic.DetailView):
     template_name = "song_detail.html"
     model = Releases
     context_object_name = 'release'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        subreleases = MySpotify().get_subreleases(kwargs.get('object').pk)  # todo: cache
+        context['subreleases'] = subreleases
+        return context
 
 
 class SongSendMessageView(View):

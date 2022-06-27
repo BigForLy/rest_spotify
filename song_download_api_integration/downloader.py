@@ -28,7 +28,7 @@ class DownloadTrack(AbstractDownloader):
         """
         return song path
         """
-        song: Song = MySpotify().get_info_about(self.url)
+        song: Song = MySpotify().get_info_about_song(self.url)
         results = Youtube(track_name=song.name, artist=song.artist).search()
         for result in results:
             if self.__comparison_time_duration(song.duration, result['duration']):
