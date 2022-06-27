@@ -32,10 +32,13 @@ class MySpotify(AbstractSpotify):
 
     def get_new_releases(self) -> dict:
         url = 'https://api.spotify.com/v1/browse/new-releases?limit=50'
+        return self._get_new_releases(url)
+
+    def _get_new_releases(self, url) -> dict:
         response_json = self.__requests(url)
         result = response_json.get('albums').get('items')
         if response_json.get('albums').get('next'):
-            result += self.__requests(response_json.get('albums').get('next'))
+            result += self._get_new_releases(response_json.get('albums').get('next'))
         return result
 
     def get_subreleases(self, parent_pk) -> dict:
