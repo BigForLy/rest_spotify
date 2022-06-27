@@ -62,7 +62,7 @@ class DownloadStrategy:
 
     @classmethod
     def music(cls, type_, music_id) -> AbstractDownloader:
-        if type_ == 'single':
+        if type_ == 'track':
             strategy = DownloadTrack(music_id)
         else:
             raise
