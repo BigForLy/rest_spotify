@@ -11,6 +11,10 @@ def celery_send_song(telegram_chat_id: int, bot_token: str, release_type: str, r
         release_pk
     )
     song: Song = downloader.download()
-    with song as audio:
+    if song:
+        with song as audio:
+            TelegramClient(telegram_chat_id, bot_token) \
+                .send_audio(audio, f'{song.artist} - {song.name}')
+    else:
         TelegramClient(telegram_chat_id, bot_token) \
-            .send_audio(audio, f'{song.artist} - {song.name}')
+                .send_message('Мы не смогли найти эту песню')
