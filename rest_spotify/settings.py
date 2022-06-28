@@ -76,6 +76,9 @@ TEMPLATES = [
     },
 ]
 
+CELERY_BROKER_URL = "redis://:" + env('REDIS_PASSWORD') + '@' + env('REDIS_HOST') + ':' + env('REDIS_PORT')
+CELERY_RESULT_BACKEND = "redis://:" + env('REDIS_PASSWORD') + '@' + env('REDIS_HOST') + ':' + env('REDIS_PORT')
+
 WSGI_APPLICATION = 'rest_spotify.wsgi.application'
 
 # Database

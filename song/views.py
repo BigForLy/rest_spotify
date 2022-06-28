@@ -1,13 +1,10 @@
 from django.views import generic
 from django.conf import settings
 from django.http import JsonResponse
-from song_download_api_integration.downloader import DownloadStrategy
-from spotify_api_integration.my_spotify import Song
-from telegram_api_integration import TelegramClient
+from song.tasks import celery_send_song
 from .models import Releases, DataFromSpotify, Artists
 from spotify_api_integration import MySpotify
 from django.views.generic.base import View
-from requests import Response
 
 
 class HomePageView(generic.TemplateView):
@@ -46,15 +43,11 @@ class SongSendMessageView(View):
             return JsonResponse({'status': 'Not AJAX request'}, status=404)
 
         if request.user.is_authenticated:
-            downloader = DownloadStrategy.music(
-                request.POST.get("type"),
-                request.POST.get("release")
-            )
-            song: Song = downloader.download()
-            with song as audio:
-                result: Response = TelegramClient(request.user.telegram_chat_id, settings.BOT_TOKEN) \
-                    .send_audio(audio, f'{song.artist} - {song.name}')
+            celery_send_song.delay(telegram_chat_id=request.user.telegram_chat_id,
+                                   bot_token=settings.BOT_TOKEN,
+                                   release_type=request.POST.get("type"),
+                                   release_pk=request.POST.get("release"))
 
-            return JsonResponse({'status': result.reason}, status=result.status_code)
+            return JsonResponse({'status': 'OK'}, status=200)
         else:
             return JsonResponse({'status': 'Please login'}, status=401)
